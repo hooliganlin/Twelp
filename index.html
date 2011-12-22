@@ -1,30 +1,32 @@
 <html>
 	<head>
 		<title>Twelp - Combining Yelp with Twitter</title>
-		<script type="text/javascript" src="js-lib/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="http://geocommons.com/javascripts/f1.api.js"></script>
-		<script type="text/javascript" src="js/map.js"></script>
+		<script type="text/javascript" src="js-lib/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/Map.js"></script>
+		<script type="text/javascript" src="js/FeaturesTable.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
 	</head>
 
 	<body>
-		<div class="geocommons_map" id="maker_map"></div><br/>
-		<a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
-				
 		<script type="text/javascript">
 			var map = new com.linbr.Map("127297", "maker_map");
 		</script>
-		<p id="callback_results">event name: </p>
+		
+		<div class="geocommons_map" id="maker_map"></div><br/>
+		<a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
+		<div id="featuresDiv">
+			<b>Features Selected:</b><br />
+			<ol id="featuresList" />
+		</div>
 		<div id="layersDiv">
-			<table id="layerTable" class="layers" summary="Map Layer Details" border="1">
-				<tr id="layerTitles">
-					<td><b>Layer Name</b></td>
-					<td><b>Layer Source</b></td>
-				</tr>
-				<tr id="layerDetails">
-					<td id="layerName"></td>
-					<td id="layerSource"></td>
-				</tr>
+			<table id="layersTable" class="layers" summary="Map Layer Details" border="1">
+				<tbody>
+					<tr id="layerHeaders">
+						<td><b>Layer Name</b></td>
+						<td><b>Layer Source</b></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</body>
