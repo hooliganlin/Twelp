@@ -5,31 +5,32 @@
 		<script type="text/javascript" src="http://geocommons.com/javascripts/f1.api.js"></script>
 		<script type="text/javascript" src="js-lib/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="js-lib/sprintf-0.7-beta1.js"></script>
+		<script type="text/javascript" src="js-lib/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="js/Map.js"></script>
-		<script type="text/javascript" src="js/FeaturesTable.js"></script>
+		<script type="text/javascript" src="js/Feature.js"></script>
+		<script type="text/javascript" src="js/FeaturesList.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
 	</head>
 
 	<body>
 		<script type="text/javascript">
-			var map = new com.linbr.Map("127297", "maker_map");
+			var map = new linbr.view.Map("127297", "maker_map");
 		</script>
 		
-		<div class="geocommons_map" id="maker_map"></div><br/>
-		<a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
-		<div id="featuresDiv">
-			<b>Features Selected:</b><br />
-			<ol id="featuresList" />
+		<div class="geocommons_map" id="maker_map"></div>
+		<div>
+			<a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
 		</div>
-		<div id="layersDiv">
-			<table id="layersTable" class="layers" summary="Map Layer Details" border="1">
-				<tbody>
-					<tr id="layerHeaders">
-						<td><b>Layer Name</b></td>
-						<td><b>Layer Source</b></td>
-					</tr>
-				</tbody>
-			</table>
+		
+		<div class=bottomDiv>
+			<div class="infoDiv">
+				<br /><b>Features Selected:</b><br />
+				<div id="featuresDiv">
+				</div>
+			</div>
+			<div class="infoDiv">
+				<br /><b>Results:</b><br />
+			</div>
 		</div>
 	</body>
 </html>

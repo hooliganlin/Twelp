@@ -2,3 +2,23 @@
 	width: 100%; 
 	height: 400px;
 }
+
+.opDiv {
+	display: none;
+}
+
+.featureLink:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+	color: blue;
+}
+
+.featureDetails {
+	
+}
+
+.infoDiv {
+	float: left;
+	width: 50%;
+}
