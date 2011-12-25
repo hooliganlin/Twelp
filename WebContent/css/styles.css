@@ -7,6 +7,10 @@
 	display: none;
 }
 
+.bufferDiv {
+	display: none;
+}
+
 .featureLink:hover {
 	cursor: pointer;
 	text-decoration: underline;

@@ -36,7 +36,7 @@ linbr.view.Map.prototype.populateLayers = function(map) {
 };
 
 /**
- * Displays the feature info in a table outside the map.
+ * Displays the feature info in a list outside the map.
  * 
  * @param features
  */
@@ -49,6 +49,6 @@ linbr.view.Map.prototype.showFeatureInfo = function(features) {
 		featuresMap[fid] = features[i];
 	}
 	
-	var featuresTable = new linbr.view.FeaturesList();
-	featuresTable.populateTable(featuresMap);
+	var featuresList = new linbr.view.FeaturesList();
+	featuresList.populateList(featuresMap);
 };
