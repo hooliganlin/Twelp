@@ -45,7 +45,7 @@ linbr.view.FeaturesList.prototype.createDetailsDiv = function(data) {
 	detailsDiv.append(detailsLink);
 	
 	//create the operations div
-	var opDiv = this.createOperationsDiv(data.fid);	
+	var opDiv = this.createOperationsDiv(data);	
 	opDiv.append(this.createBufferDiv(data));
 	
 	detailsDiv.append(opDiv);
@@ -57,26 +57,22 @@ linbr.view.FeaturesList.prototype.createDetailsDiv = function(data) {
  * displaying the details and buffering the selected feature.
  * @returns opDiv for the selected feature.
  */
-linbr.view.FeaturesList.prototype.createOperationsDiv = function(fid) {
+linbr.view.FeaturesList.prototype.createOperationsDiv = function(data) {
 	var opDiv =  $(document.createElement('div'));
-	opDiv.attr('class', 'opDiv '+fid);
+	opDiv.attr('class', 'opDiv ' + data.fid);
 	
 	var btnDetails = $(document.createElement('button'));
 	var btnTweets = $(document.createElement('button'));
 	
-	btnDetails.attr('id', 'btnDetails'+fid);
+	btnDetails.attr('id', 'btnDetails' + data.fid);
 	btnDetails.attr('type', 'button');
 	btnDetails.html('Show Details');
+	btnDetails.click(data, this.showFeatureDetails);
 	
-	btnTweets.attr('id', 'btnTweet'+fid);
+	btnTweets.attr('id', 'btnTweet'+data.fid);
 	btnTweets.attr('type', 'button');
 	btnTweets.html('Find Tweets');
-	btnTweets.click(fid, function(args){
-		//display the buffer option group
-		$(".buffer"+args.data).toggle();
-		var bufferAnalysis = new linbr.analysis.BufferAnalysis();
-		bufferAnalysis.createBuffer(data.feature);
-	});
+	btnTweets.click(data, this.showBufferOps);
 	
 	opDiv.append(btnTweets, btnDetails);
 	return opDiv;
@@ -92,6 +88,27 @@ linbr.view.FeaturesList.prototype.showOpDetails = function(args) {
 	$(".opDiv").hide();
 	$("."+data.fid).toggle();
 };
+
+/**
+ * Toggles the buffer option parameters
+ * @param args
+ */
+linbr.view.FeaturesList.prototype.showBufferOps = function(args) {
+	$(".buffer"+args.data.fid).toggle();
+	var bufferAnalysis = new linbr.analysis.BufferAnalysis();
+	bufferAnalysis.createBuffer(args.data.feature);
+};
+
+/**
+ * Shows the feature details table 
+ * @param args
+ */
+linbr.view.FeaturesList.prototype.showFeatureDetails = function(args) {
+	var detailsGrid = new linbr.view.DetailsGrid();
+	var feature = new linbr.model.Feature(args.data.feature);
+	detailsGrid.populateGrid(feature);
+};
+
 
 /**
  * Creates the buffer form when a feature is selected.
@@ -116,44 +133,4 @@ linbr.view.FeaturesList.prototype.createBufferDiv = function(data) {
 	
 	bufferDiv.append(txtBufferDist, btnBuffer);
 	return bufferDiv;
-};
-
-/**
- * 
- * @param feature
- * @returns
- */
-linbr.view.FeaturesList.prototype.buildDetailsTable = function(feature) {
-	
-	var table = $(document.createElement('table'));
-	table.attr('id', 'detailsTable');
-	table.attr('border', '1');
-	table.append("<thead><tr><th>Field</th><th>Value</th></tr></thead><tbody id='detailsBody'><tr></tr></tbody>");
-
-	for(key in feature) {
-		//populate the unique fields
-		if(key == "fields") {
-			var fieldsObj = feature[key];
-			for(fieldName in fieldsObj) {
-				var row = $(document.createElement('tr'));
-				var tdField = $(document.createElement('td'));
-				var tdValue = $(document.createElement('td'));
-				tdField.html(fieldName);
-				tdValue.html(fieldsObj[fieldName]);
-				
-				row.append(tdField);
-				row.append(tdValue);
-				$("#detailsBody").append(row);
-			}
-		}
-		else {
-			//tdField.append(key);
-			//tdValue.append(feature[key]);
-		}
-		
-		//$("#detailsBody").append(row);
-	}
-	
-	
-	return table;
 };

@@ -6,7 +6,7 @@ linbr.model = linbr.model || {};
 linbr.model.Feature = linbr.model.Feature || {};
 
 linbr.model.Feature = function(feature) {
-
+	this.feature = feature;
 	this.fields = this.serializeFields(feature);
 	
 	/** common fields for all GeoCommons features **/
@@ -39,4 +39,20 @@ linbr.model.Feature.prototype.serializeExtent = function(extentArray) {
 		extentObj[i] = extentArray[i];
 	}
 	return extentObj;
+};
+
+/**
+ * Converts the Feature {Object} to an {Array}
+ * @returns {Array}
+ */
+linbr.model.Feature.prototype.toArray = function() {
+	var featureArr = [];
+	if(this.feature) {
+		for(key in this.feature) {
+			var tempArr = [];
+			tempArr.push(key, this.feature[key]);
+			featureArr.push(tempArr);
+		}
+	}
+	return featureArr;
 };

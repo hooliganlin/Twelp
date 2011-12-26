@@ -7,5 +7,5 @@ linbr.analysis.BufferAnalysis = function() {
 };
 
 linbr.analysis.BufferAnalysis.prototype.createBuffer = function(feature) {
-	
+	alert('create buffer!');
 };
