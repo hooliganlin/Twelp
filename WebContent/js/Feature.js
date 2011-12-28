@@ -43,15 +43,23 @@ linbr.model.Feature.prototype.serializeExtent = function(extentArray) {
 
 /**
  * Converts the Feature {Object} to an {Array}
+ * @param showOnlyFields Flag to show only the fields or all feature details (geometry, guid, extent)
  * @returns {Array}
  */
-linbr.model.Feature.prototype.toArray = function() {
+linbr.model.Feature.prototype.toArray = function(showOnlyFields) {
 	var featureArr = [];
-	if(this.feature) {
-		for(key in this.feature) {
+	var listObj = showOnlyFields ? this.fields : this.feature;
+	
+	if(listObj) {
+		for(key in listObj) {
 			var tempArr = [];
-			tempArr.push(key, this.feature[key]);
-			featureArr.push(tempArr);
+			if(key == "date") {
+				tempArr.push(key, listObj[key].time);
+			}
+			else {
+				tempArr.push(key, listObj[key]);	
+			}
+			featureArr.push(tempArr);	
 		}
 	}
 	return featureArr;

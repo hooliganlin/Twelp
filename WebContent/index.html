@@ -4,8 +4,10 @@
 		<title>Twelp - Combining Yelp with Twitter</title>
 		<script type="text/javascript" src="http://geocommons.com/javascripts/f1.api.js"></script>
 		<script type="text/javascript" src="js-lib/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js-lib/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="js-lib/sprintf-0.7-beta1.js"></script>
 		<script type="text/javascript" src="js-lib/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 		<script type="text/javascript" src="js/Map.js"></script>
 		<script type="text/javascript" src="js/Feature.js"></script>
 		<script type="text/javascript" src="js/FeaturesList.js"></script>
@@ -13,9 +15,10 @@
 		<script type="text/javascript" src="js/BufferAnalysis.js"></script>
 		<script type="text/javascript" src="js/TwitterAnalysis.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
 	</head>
 
-	<body>
+	<body class="bodyClass">
 		<script type="text/javascript">
 			var map = new linbr.view.Map("127297", "maker_map");
 		</script>
@@ -27,13 +30,13 @@
 		
 		<div class=bottomDiv>
 			<div class="infoDiv">
+				<br /><b>Analysis:</b><br />
+				<div id="analysisDiv"></div>
+			</div>
+			<div class="infoDiv">
 				<br /><b>Features Selected:</b><br />
 				<div id="featuresDiv">
 				</div>
-			</div>
-			<div class="infoDiv">
-				<br /><b>Analysis:</b><br />
-				<div id="analysisDiv"></div>
 			</div>
 		</div>
 	</body>

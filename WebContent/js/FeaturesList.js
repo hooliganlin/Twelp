@@ -66,12 +66,16 @@ linbr.view.FeaturesList.prototype.createOperationsDiv = function(data) {
 	
 	btnDetails.attr('id', 'btnDetails' + data.fid);
 	btnDetails.attr('type', 'button');
+	btnDetails.attr('class', 'btnClass');
 	btnDetails.html('Show Details');
+	btnDetails.button();	//jQuery button style widget
 	btnDetails.click(data, this.showFeatureDetails);
 	
 	btnTweets.attr('id', 'btnTweet'+data.fid);
 	btnTweets.attr('type', 'button');
 	btnTweets.html('Find Tweets');
+	btnTweets.attr('class', 'btnClass');
+	btnTweets.button();		//jQuery button style widget
 	btnTweets.click(data, this.showBufferOps);
 	
 	opDiv.append(btnTweets, btnDetails);
@@ -123,14 +127,44 @@ linbr.view.FeaturesList.prototype.createBufferDiv = function(data) {
 	txtBufferDist.attr('id', 'txtBufferDist'+data.fid);
 	txtBufferDist.attr('type', 'text');
 	
+	var cbBufferUnits = $(document.createElement('select'));
+	cbBufferUnits.attr('id', 'cbBufferUnits');
+	cbBufferUnits.append("<option value='mi'>Miles</option><option value='km'>Kilometers</option>");
+	
 	var btnBuffer = $(document.createElement('button'));
 	btnBuffer.attr('id', 'btnBuffer'+data.fid);
 	btnBuffer.html('Buffer');
+	btnBuffer.button();
+	btnBuffer.click(data, this.runTwitterAnalysis);
 	
-	btnBuffer.click(data, function(args) {
-		alert('run buffer!!!');
-	});
-	
-	bufferDiv.append(txtBufferDist, btnBuffer);
+	bufferDiv.append(txtBufferDist, cbBufferUnits, btnBuffer);
 	return bufferDiv;
+};
+
+/**
+ * Creates a TwitterAnalysis object to find tweets and trends of the selected
+ * feature.
+ * @param args The feature and radius for the query
+ */
+linbr.view.FeaturesList.prototype.runTwitterAnalysis = function(args) {
+	try {
+		var data = args.data;
+		var radius = parseFloat($("#txtBufferDist"+data.fid).val());
+		var units = $("#cbBufferUnits option:selected").val();
+		var twitterArgs = {};
+		twitterArgs['query'] = data.feature.name;
+		twitterArgs['lat'] = data.feature.extent[0];
+		twitterArgs['long'] = data.feature.extent[2];
+		twitterArgs['radius'] = radius;
+		twitterArgs['units'] = units;
+		
+		var twitterAnalysis = new linbr.analysis.TwitterAnalysis();
+		twitterAnalysis.findTweets(twitterArgs, function(args) {
+			var detailsGrid = new linbr.view.DetailsGrid();
+			detailsGrid.populateTweets(args);
+		});
+	}
+	catch (exception){
+		alert(exception);
+	}
 };

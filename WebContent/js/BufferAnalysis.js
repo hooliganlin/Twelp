@@ -7,5 +7,7 @@ linbr.analysis.BufferAnalysis = function() {
 };
 
 linbr.analysis.BufferAnalysis.prototype.createBuffer = function(feature) {
-	alert('create buffer!');
+	//alert('create buffer!');
+	//http://api.twitter.com/1/geo/search.json
+		
 };

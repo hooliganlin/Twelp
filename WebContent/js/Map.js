@@ -7,6 +7,8 @@ var linbr = linbr || {};
 linbr.view = linbr.view || {};
 linbr.view.Map = linbr.view.Map || {};
 
+
+var mapObj;
 /**
  * 
  * @param mapId
@@ -16,7 +18,7 @@ linbr.view.Map = function (mapId, domId) {
 	var mapObj = this;
 	this.geoIQMap = new F1.Maker.Map({ map_id: mapId,
 										dom_id: domId,
-										onMapLoaded : mapObj.populateLayers,
+										onLayerLoaded : mapObj.onLayersLoaded,
 										onFeatureSelected : mapObj.showFeatureInfo
 									});
 };
@@ -26,13 +28,19 @@ linbr.view.Map = function (mapId, domId) {
  * 
  * @param map
  */
-linbr.view.Map.prototype.populateLayers = function(map) {	
-	/*var layers = map.getLayers();
-	var layersTable = $("#layersTable > tbody:last");
-	for (var i=0; i < layers.length; i++) {
-		var layer = layers[i];
-		layersTable.append('<tr><td>' + layer.title +'</td><td>' + layer.source +'</td></tr>');
-	}*/
+linbr.view.Map.prototype.onLayersLoaded = function(args) {
+	
+	/** TODO  figure out if charts should be implemented**/ 
+	F1.Visualizer.utils.get_data_from_flash("14", function(data) {
+	    var features = jq.map(data.features, function(feature) { 
+	    if (feature) { 
+	    	return feature.attributes;
+	    } 
+	  });
+
+	    data.features = features;
+	    F1.Visualizer.charts.grid(600, "100%", data, "projects-table");
+	 }, mapObj.geoIQMap);
 };
 
 /**
