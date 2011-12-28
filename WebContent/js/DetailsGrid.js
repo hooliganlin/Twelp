@@ -52,11 +52,12 @@ linbr.view.DetailsGrid.prototype.populateTweets = function(args) {
 			var trendsDiv = $(document.createElement('div'));
 			trendsDiv.attr('id', 'trendsListDiv');
 			trendsDiv.append("<p>TRENDS!!</p>");
-			
+
 			var twitterTabsDiv = $(document.createElement('div'));
 			twitterTabsDiv.attr('id', 'twitterTabsDiv');
 			twitterTabsDiv.append("<ul><li><a href='#tweetListDiv'>Tweets</a></li><li><a href='#trendsListDiv'>Trends</a></li></ul>");
-			twitterTabsDiv.append(tweetsDiv, trendsDiv);
+			twitterTabsDiv.append(tweetsDiv, trendsDiv, this.createTweetNavigationDiv(args));
+			
 			twitterTabsDiv.tabs();
 			
 			$("#analysisDiv").append(twitterTabsDiv);
@@ -78,11 +79,72 @@ linbr.view.DetailsGrid.prototype.createTweetListItems = function(tweets) {
 	tweetsList.selectable();
 	
 	//Setup tweet list item template
-	var markup = "<li class='ui-widget-content'><table><tr rowspan=2><td><img src='${profile_image_url}' width='32' height='32' /></td>"
-		+ "<td><table><tr><td style='font-weight:bold'>${from_user}</td></tr><tr><td>${text}</td></tr></table></tr></table></li>";
+	var markup = "<li class='ui-widget-content'><table><tr rowspan=3><td><img src='${profile_image_url}' width='32' height='32' /></td>"
+		+ "<td><table><tr><td style='font-weight:bold'>${from_user}</td></tr><tr><td class='tweetDate'>${created_at}</td></tr><tr><td>${text}</td></tr></table></tr></table></li>";
 
 	$.template("tweetListTemplate", markup);
 	$.tmpl("tweetListTemplate", tweets).appendTo(tweetsList);
 
 	return tweetsList;
+};
+
+/**
+ * 
+ * @param tweetArgs The twitter JSON results
+ */
+linbr.view.DetailsGrid.prototype.createTweetNavigationDiv = function(tweetArgs) {
+
+	var navigationDiv = $(document.createElement('div'));
+	navigationDiv.attr('class', 'tweetNavigation');
+	navigationDiv.attr('align', 'center');
+	
+	var btnNextPageProps = { 
+			id : "btnNextPage",
+			className : "btnNextPageClass",
+			icon : "ui-icon-circle-arrow-e",
+			disable : tweetArgs.next_page ? false : true
+	};
+	
+	var btnPrevPageProps = {
+			id : "btnPrevPage",
+			className : "btnPrevPageClass",
+			icon : "ui-icon-circle-arrow-w",
+			disable : tweetArgs.previous_page ? false : true
+	};
+	
+	var btnNextPage = this.createTweetNavButtons(btnNextPageProps, tweetArgs);
+	var btnPrevPage = this.createTweetNavButtons(btnPrevPageProps, tweetArgs);
+	
+	navigationDiv.append(btnPrevPage, btnNextPage);
+	return navigationDiv;
+};
+
+/**
+ * 
+ * @param args
+ */
+linbr.view.DetailsGrid.prototype.createTweetNavButtons = function(property, tweetArgs) {
+	var self = this;
+	var navButton = $(document.createElement('button'));
+	navButton.attr('id', property.id);
+	navButton.attr('class', property.className);
+
+	navButton.button({icons: { primary : property.icon}, disabled: property.disable, text : false});
+	navButton.click(tweetArgs, function(args){
+		var tweetData = args.data;
+		var twitterAnalysis = new linbr.analysis.TwitterAnalysis();
+		if(this.id == "btnNextPage") {
+			//each new tweet page is a call to the twitter search api
+			twitterAnalysis.findTweets({'next_page' : tweetData.next_page }, function(callBackArg){
+				self.populateTweets(callBackArg);
+			});
+		}
+		else {
+			twitterAnalysis.findTweets({'previous_page' : tweetData.previous_page }, function(callBackArg){
+				self.populateTweets(callBackArg);
+			});
+		}
+	});
+	
+	return navButton;
 };
