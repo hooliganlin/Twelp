@@ -34,3 +34,7 @@ linbr.analysis.TwitterAnalysis.prototype.findTweets = function(args, callback) {
 	    } 
 	});
 };
+
+linbr.analysis.TwitterAnalysis.prototype.findTrends = function(args, callback) {
+	
+};

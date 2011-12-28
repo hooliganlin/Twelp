@@ -43,12 +43,23 @@ linbr.view.DetailsGrid.prototype.populateTweets = function(args) {
 		var resultsArr = args.results;
 		if(resultsArr.length > 0) {
 			//create the tweet list to populated
-			var listDiv = $(document.createElement('div'));
-			listDiv.attr('class', 'tweetListDiv');
-			
+			var tweetsDiv = $(document.createElement('div'));
 			var tweetListItems = this.createTweetListItems(resultsArr);
-			listDiv.append(tweetListItems);
-			$("#analysisDiv").append(listDiv);
+			tweetsDiv.attr('id', 'tweetListDiv');
+			tweetsDiv.append(tweetListItems);
+			
+			//create and populate the trends list tab
+			var trendsDiv = $(document.createElement('div'));
+			trendsDiv.attr('id', 'trendsListDiv');
+			trendsDiv.append("<p>TRENDS!!</p>");
+			
+			var twitterTabsDiv = $(document.createElement('div'));
+			twitterTabsDiv.attr('id', 'twitterTabsDiv');
+			twitterTabsDiv.append("<ul><li><a href='#tweetListDiv'>Tweets</a></li><li><a href='#trendsListDiv'>Trends</a></li></ul>");
+			twitterTabsDiv.append(tweetsDiv, trendsDiv);
+			twitterTabsDiv.tabs();
+			
+			$("#analysisDiv").append(twitterTabsDiv);
 		}
 		else {
 			$("#analysisDiv").append("<span class='emptyTweetsClass'>No Tweets were found for this restaurant :(</span>");

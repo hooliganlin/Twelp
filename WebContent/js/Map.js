@@ -31,7 +31,7 @@ linbr.view.Map = function (mapId, domId) {
 linbr.view.Map.prototype.onLayersLoaded = function(args) {
 	
 	/** TODO  figure out if charts should be implemented**/ 
-	F1.Visualizer.utils.get_data_from_flash("14", function(data) {
+	F1.Visualizer.utils.get_data_from_flash("2", function(data) {
 	    var features = jq.map(data.features, function(feature) { 
 	    if (feature) { 
 	    	return feature.attributes;
