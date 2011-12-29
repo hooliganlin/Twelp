@@ -1,10 +1,10 @@
 var linbr = linbr || {};
-linbr.analysis = linbr.analysis || {};
-linbr.analysis.TwitterAnalysis = linbr.analysis.TwitterAnalysis || {};
+linbr.twitter = linbr.twitter || {};
+linbr.twitter.TwitterAnalysis = linbr.twitter.TwitterAnalysis || {};
 
 var SEARCH_JSON_URL = "http://search.twitter.com/search.json?callback=?&";
 
-linbr.analysis.TwitterAnalysis = function() {
+linbr.twitter.TwitterAnalysis = function() {
 	
 };
 
@@ -13,7 +13,7 @@ linbr.analysis.TwitterAnalysis = function() {
  * @param args - Contains the query parameters.
  * @param callback - The callback function when the search of tweets is finished.
  */
-linbr.analysis.TwitterAnalysis.prototype.findTweets = function(args, callback) {
+linbr.twitter.TwitterAnalysis.prototype.findTweets = function(args, callback) {
 	
 	var query = "";
 	if(args.next_page || args.previous_page) {
@@ -43,6 +43,11 @@ linbr.analysis.TwitterAnalysis.prototype.findTweets = function(args, callback) {
 	});
 };
 
-linbr.analysis.TwitterAnalysis.prototype.findTrends = function(args, callback) {
-	
+/**
+ * Finds the current trends of the selected feature's area.
+ * @param args
+ * @param callback
+ */
+linbr.twitter.TwitterAnalysis.prototype.findTrends = function(args, callback) {
+	/** TODO **/
 };

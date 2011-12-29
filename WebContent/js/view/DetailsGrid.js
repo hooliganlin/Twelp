@@ -8,7 +8,7 @@ linbr.view.DetailsGrid = function(feature) {
 };
 
 /**
- * 
+ * Populates the DetailsGrid with the selected feature's attributes.
  * @param feature linbr.model.Feature
  */
 linbr.view.DetailsGrid.prototype.populateGrid = function(feature) {
@@ -31,7 +31,7 @@ linbr.view.DetailsGrid.prototype.populateGrid = function(feature) {
 };
 
 /**
- * 
+ * Populates the DetailsGrid with a list of tweets in the Tweeter List group.
  * @param args - The returned arguments from the Twitter Search API call.
  */
 linbr.view.DetailsGrid.prototype.populateTweets = function(args) {
@@ -89,7 +89,7 @@ linbr.view.DetailsGrid.prototype.createTweetListItems = function(tweets) {
 };
 
 /**
- * 
+ * Creates the bottom group for the navigation buttons for the tweets.
  * @param tweetArgs The twitter JSON results
  */
 linbr.view.DetailsGrid.prototype.createTweetNavigationDiv = function(tweetArgs) {
@@ -120,8 +120,9 @@ linbr.view.DetailsGrid.prototype.createTweetNavigationDiv = function(tweetArgs) 
 };
 
 /**
- * 
- * @param args
+ * Creates the Twitter Navigation buttons for the Tweeter feeds.
+ * @param property The property of the button.
+ * @param tweetArgs The Twitter JSON results
  */
 linbr.view.DetailsGrid.prototype.createTweetNavButtons = function(property, tweetArgs) {
 	var self = this;
@@ -132,16 +133,19 @@ linbr.view.DetailsGrid.prototype.createTweetNavButtons = function(property, twee
 	navButton.button({icons: { primary : property.icon}, disabled: property.disable, text : false});
 	navButton.click(tweetArgs, function(args){
 		var tweetData = args.data;
-		var twitterAnalysis = new linbr.analysis.TwitterAnalysis();
+		var twitterAnalysis = new linbr.twitter.TwitterAnalysis();
+		var datasetCreator = new linbr.geoiq.DatasetCreator();
 		if(this.id == "btnNextPage") {
 			//each new tweet page is a call to the twitter search api
 			twitterAnalysis.findTweets({'next_page' : tweetData.next_page }, function(callBackArg){
 				self.populateTweets(callBackArg);
+				datasetCreator.findDataset(callBackArg);
 			});
 		}
 		else {
 			twitterAnalysis.findTweets({'previous_page' : tweetData.previous_page }, function(callBackArg){
 				self.populateTweets(callBackArg);
+				datasetCreator.findDataset(callBackArg);
 			});
 		}
 	});

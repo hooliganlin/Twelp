@@ -18,29 +18,18 @@ linbr.view.Map = function (mapId, domId) {
 	var mapObj = this;
 	this.geoIQMap = new F1.Maker.Map({ map_id: mapId,
 										dom_id: domId,
-										onLayerLoaded : mapObj.onLayersLoaded,
+										onMapLoaded : mapObj.onMapLoaded,
 										onFeatureSelected : mapObj.showFeatureInfo
 									});
 };
 
 /**
- * For testing purposes. Getting layers from the map and outputting on the table
- * 
+ * When all layers are loaded for the premade map, create an empty datasets
+ * for the Twitter feeds.
  * @param map
  */
-linbr.view.Map.prototype.onLayersLoaded = function(args) {
+linbr.view.Map.prototype.onMapLoaded = function(args) {
 	
-	/** TODO  figure out if charts should be implemented**/ 
-	F1.Visualizer.utils.get_data_from_flash("2", function(data) {
-	    var features = jq.map(data.features, function(feature) { 
-	    if (feature) { 
-	    	return feature.attributes;
-	    } 
-	  });
-
-	    data.features = features;
-	    F1.Visualizer.charts.grid(600, "100%", data, "projects-table");
-	 }, mapObj.geoIQMap);
 };
 
 /**

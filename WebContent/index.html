@@ -7,13 +7,15 @@
 		<script type="text/javascript" src="js-lib/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="js-lib/sprintf-0.7-beta1.js"></script>
 		<script type="text/javascript" src="js-lib/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="js-lib/webtoolkit-base64.js"></script>
 		<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-		<script type="text/javascript" src="js/Map.js"></script>
-		<script type="text/javascript" src="js/Feature.js"></script>
-		<script type="text/javascript" src="js/FeaturesList.js"></script>
-		<script type="text/javascript" src="js/DetailsGrid.js"></script>
-		<script type="text/javascript" src="js/BufferAnalysis.js"></script>
-		<script type="text/javascript" src="js/TwitterAnalysis.js"></script>
+		<script type="text/javascript" src="js/model/Feature.js"></script>
+		<script type="text/javascript" src="js/view/Map.js"></script>
+		<script type="text/javascript" src="js/view/FeaturesList.js"></script>
+		<script type="text/javascript" src="js/view/DetailsGrid.js"></script>
+		<script type="text/javascript" src="js/twitter/TwitterAnalysis.js"></script>
+		<script type="text/javascript" src="js/geoiq/DatasetCreator.js"></script>
+		<script type="text/javascript" src="js/RequestHeader.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
 		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
 	</head>
@@ -39,6 +41,14 @@
 				</div>
 			</div>
 		</div>
+		
+	<!--  	<div>
+			<form action="http://geocommons.com/datasets.json" method="post">
+				URL: <input name="url" type="text" /><br />
+				Url type: <input name="url_type" text="text" value="atom" /><br />
+				<input type="submit" value="Submit" />
+			</form>
+		</div>-->
 	</body>
 </html>
 

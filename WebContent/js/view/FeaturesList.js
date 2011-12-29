@@ -99,8 +99,6 @@ linbr.view.FeaturesList.prototype.showOpDetails = function(args) {
  */
 linbr.view.FeaturesList.prototype.showBufferOps = function(args) {
 	$(".buffer"+args.data.fid).toggle();
-	var bufferAnalysis = new linbr.analysis.BufferAnalysis();
-	bufferAnalysis.createBuffer(args.data.feature);
 };
 
 /**
@@ -158,10 +156,14 @@ linbr.view.FeaturesList.prototype.runTwitterAnalysis = function(args) {
 		twitterArgs['radius'] = radius;
 		twitterArgs['units'] = units;
 		
-		var twitterAnalysis = new linbr.analysis.TwitterAnalysis();
+		var twitterAnalysis = new linbr.twitter.TwitterAnalysis();
 		twitterAnalysis.findTweets(twitterArgs, function(args) {
 			var detailsGrid = new linbr.view.DetailsGrid();
 			detailsGrid.populateTweets(args);
+			
+			//create an empty dataset for the queried tweets
+			var datasetCreator = new linbr.geoiq.DatasetCreator();
+			datasetCreator.createDataset(args, data.feature);
 		});
 	}
 	catch (exception){
