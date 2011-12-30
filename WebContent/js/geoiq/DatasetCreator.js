@@ -36,8 +36,9 @@ linbr.geoiq.DatasetCreator = (function() {
 			    data: dataset,
 			    beforeSend : this.setRequestHeader,
 			    success: function(response) { 
-			    	self.datasetId = response.id;
-			    	callback(response); 
+			    	var jsonResponse = JSON.parse(response);
+			    	self.datasetId = jsonResponse.id;
+			    	callback(jsonResponse); 
 			    },
 			    error : this.onError
 			});
