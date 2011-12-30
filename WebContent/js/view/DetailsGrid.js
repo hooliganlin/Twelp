@@ -1,11 +1,19 @@
+/**
+ * This view component displays the details and results of a selected feature.
+ * It provides the list component for tweets and the data table to be displayed 
+ * when queried.
+ * 
+ * @author Bryan Lin
+ */
 var linbr = linbr || {};
 linbr.view = linbr.view || {};
 linbr.view.DetailsGrid = linbr.view.DetailsGrid || {};
 
-
-linbr.view.DetailsGrid = function(feature) {
-	
-};
+/**
+ * DetailsGrid default constructor
+ * @returns {linbr.view.DetailsGrid}
+ */
+linbr.view.DetailsGrid = function() {};
 
 /**
  * Populates the DetailsGrid with the selected feature's attributes.
@@ -32,15 +40,15 @@ linbr.view.DetailsGrid.prototype.populateGrid = function(feature) {
 
 /**
  * Populates the DetailsGrid with a list of tweets in the Tweeter List group.
- * @param args - The returned arguments from the Twitter Search API call.
+ * @param twitterResponse - The returned response data from the Twitter Search API call.
  */
-linbr.view.DetailsGrid.prototype.populateTweets = function(args) {
+linbr.view.DetailsGrid.prototype.populateTweets = function(twitterResponse) {
 	$("#analysisDiv").empty();
-	if(args.error) {
-		$("#analysisDiv").html(args.error);
+	if(twitterResponse.error) {
+		$("#analysisDiv").html(twitterResponse.error);
 	}
 	else {
-		var resultsArr = args.results;
+		var resultsArr = twitterResponse.results;
 		if(resultsArr.length > 0) {
 			//create the tweet list to populated
 			var tweetsDiv = $(document.createElement('div'));
@@ -51,12 +59,12 @@ linbr.view.DetailsGrid.prototype.populateTweets = function(args) {
 			//create and populate the trends list tab
 			var trendsDiv = $(document.createElement('div'));
 			trendsDiv.attr('id', 'trendsListDiv');
-			trendsDiv.append("<p>TRENDS!!</p>");
+			trendsDiv.append("<p>Trends will be implemented later...stay tuned!</p>");
 
 			var twitterTabsDiv = $(document.createElement('div'));
 			twitterTabsDiv.attr('id', 'twitterTabsDiv');
 			twitterTabsDiv.append("<ul><li><a href='#tweetListDiv'>Tweets</a></li><li><a href='#trendsListDiv'>Trends</a></li></ul>");
-			twitterTabsDiv.append(tweetsDiv, trendsDiv, this.createTweetNavigationDiv(args));
+			twitterTabsDiv.append(tweetsDiv, trendsDiv, this.createTweetNavigationDiv(twitterResponse));
 			
 			twitterTabsDiv.tabs();
 			
@@ -134,18 +142,19 @@ linbr.view.DetailsGrid.prototype.createTweetNavButtons = function(property, twee
 	navButton.click(tweetArgs, function(args){
 		var tweetData = args.data;
 		var twitterAnalysis = new linbr.twitter.TwitterAnalysis();
-		var datasetCreator = new linbr.geoiq.DatasetCreator();
+		var featureCreator = linbr.geoiq.FeatureCreator.getInstance();
+		var datasetId = linbr.geoiq.DatasetCreator.getInstance().datasetId;
+		
 		if(this.id == "btnNextPage") {
 			//each new tweet page is a call to the twitter search api
-			twitterAnalysis.findTweets({'next_page' : tweetData.next_page }, function(callBackArg){
-				self.populateTweets(callBackArg);
-				datasetCreator.findDataset(callBackArg);
+			twitterAnalysis.findTweets({'next_page' : tweetData.next_page }, function(twitterResponse){
+				self.populateTweets(twitterResponse);
+				featureCreator.addFeature(twitterResponse, datasetId);
 			});
 		}
 		else {
-			twitterAnalysis.findTweets({'previous_page' : tweetData.previous_page }, function(callBackArg){
-				self.populateTweets(callBackArg);
-				datasetCreator.findDataset(callBackArg);
+			twitterAnalysis.findTweets({'previous_page' : tweetData.previous_page }, function(twitterResponse){
+				self.populateTweets(twitterResponse);
 			});
 		}
 	});

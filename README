@@ -1,1 +1,24 @@
-test
+Twelp by Bryan Lin
+
+This prototype web application uses the Twitter REST API and GeoCommons API.
+It demonstrates the capability to grab Twitter feeds on a selected feature and display
+those feeds (if they have geocode), onto the GeoCommons Map.
+
+The current map consists of Yelp data with the DC Health Inspection. Using the Yelp data,
+this application can find the surrounding tweets about that particular restaurant. 
+
+NOTE: By default, if there is no geotagged tweets around the surrounding restaurant, 
+the Twitter Search REST API will default to the text query. The results will display 
+all tweets going back from a week ago about that text query.
+
+The concepts of this application are to display the possible integration of Twitter with
+GeoIQ, find the trends of a particular restaurant, and to combine tweets with Yelp reviews.
+Having more data and seeing how many followers a restaurant has can justify Yelp's rating.
+
+https://dev.twitter.com/docs/api
+http://developer.geoiq.com/api/
+
+Please feel free to comment and contribute any code that could make this application more
+relevant. 
+
+You can contact me at bryan.t.lin1@gmail.com

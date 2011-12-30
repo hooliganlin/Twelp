@@ -1,5 +1,7 @@
 /**
 * Wrapper for GeoCommons Feature object
+* 
+* @author Bryan Lin
 */
 var linbr = linbr || {};
 linbr.model = linbr.model || {};
@@ -16,7 +18,9 @@ linbr.model.Feature = function(feature) {
 };
 
 /**
- * 
+ * Serializes the attribute fields that are not default GeoCommons
+ * attributes into Objects.
+ * @param feature The feature data retrieved from a GeoCommons dataset. 
  */
 linbr.model.Feature.prototype.serializeFields = function(feature) {
 	var fieldObj = new Object();
@@ -26,19 +30,6 @@ linbr.model.Feature.prototype.serializeFields = function(feature) {
 		}
 	}
 	return fieldObj;
-};
-
-/**
- * 
- * @param extentArray
- * @returns {Object}
- */
-linbr.model.Feature.prototype.serializeExtent = function(extentArray) {
-	var extentObj = new Object();
-	for(var i = 0; i < extentArray.length; i++) {
-		extentObj[i] = extentArray[i];
-	}
-	return extentObj;
 };
 
 /**

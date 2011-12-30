@@ -1,3 +1,13 @@
+/**
+ * This view component handles the features that are to be displayed in 
+ * a list when it has been selected from the map. The FeaturesList
+ * component lists each feature that has been selected and provides two
+ * operations: 
+ * 1) Finding Tweets around the selected feature
+ * 2) Displaying the selected feature's attributes.
+ * 
+ * @author Bryan Lin
+ */
 var linbr = linbr || {};
 linbr.view = linbr.view || {};
 linbr.view.FeaturesList = linbr.view.FeaturesList || {};
@@ -129,13 +139,17 @@ linbr.view.FeaturesList.prototype.createBufferDiv = function(data) {
 	cbBufferUnits.attr('id', 'cbBufferUnits');
 	cbBufferUnits.append("<option value='mi'>Miles</option><option value='km'>Kilometers</option>");
 	
+	var btnBufferDiv = $(document.createElement('div'));
+	btnBufferDiv.attr('id', 'btnBufferDiv');
+	
 	var btnBuffer = $(document.createElement('button'));
 	btnBuffer.attr('id', 'btnBuffer'+data.fid);
 	btnBuffer.html('Buffer');
 	btnBuffer.button();
 	btnBuffer.click(data, this.runTwitterAnalysis);
+	btnBufferDiv.append(btnBuffer);
 	
-	bufferDiv.append(txtBufferDist, cbBufferUnits, btnBuffer);
+	bufferDiv.append(txtBufferDist, cbBufferUnits, btnBufferDiv);
 	return bufferDiv;
 };
 
@@ -157,14 +171,33 @@ linbr.view.FeaturesList.prototype.runTwitterAnalysis = function(args) {
 		twitterArgs['units'] = units;
 		
 		var twitterAnalysis = new linbr.twitter.TwitterAnalysis();
-		twitterAnalysis.findTweets(twitterArgs, function(args) {
-			var detailsGrid = new linbr.view.DetailsGrid();
-			detailsGrid.populateTweets(args);
+		twitterAnalysis.findTweets(twitterArgs, function(twitterResponse) {
+			var datasetCreator = linbr.geoiq.DatasetCreator.getInstance();
+			var featureCreator = linbr.geoiq.FeatureCreator.getInstance();
+			var datasetName = sprintf("Twitter Data: %s - %s%s buffer", data.feature.name, radius, units);
+			var datasetParam = { "datasetName" : datasetName, "twitterResponse" : twitterResponse, "featureData" : data.feature };
 			
 			//create an empty dataset for the queried tweets
-			var datasetCreator = new linbr.geoiq.DatasetCreator();
-			datasetCreator.createDataset(args, data.feature);
+			datasetCreator.createDataset(datasetParam, function(response) {
+				console.info("Successfully created dataset: " + response.title + " with id: " + response.id);		
+				featureCreator.addFeature(twitterResponse, response.id);
+				
+				//display the tweets in the results details grid
+				var detailsGrid = new linbr.view.DetailsGrid();
+				detailsGrid.populateTweets(twitterResponse);
+				$("#progressBar").remove();
+				$("#btnBuffer"+data.fid).button("option", "disabled", false);
+			});
 		});
+		
+		//create a loading screen while creating the twitter dataset
+		var progressBar = $(document.createElement('div'));
+		progressBar.attr('id', "progressBar");
+		progressBar.attr('align', "center");
+		progressBar.progressbar({value : 100});
+
+		$(".buffer"+data.fid).append(progressBar);
+		$("#btnBuffer"+data.fid).button("option", "disabled", true);
 	}
 	catch (exception){
 		alert(exception);

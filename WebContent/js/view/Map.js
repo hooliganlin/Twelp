@@ -1,35 +1,34 @@
 /**
+ * Map view component that displays the GeoIQ map.
  * 
+ * @author Bryan Lin
  */
-
-/** namespace **/
 var linbr = linbr || {};
 linbr.view = linbr.view || {};
 linbr.view.Map = linbr.view.Map || {};
 
-
-var mapObj;
 /**
- * 
- * @param mapId
- * @param domId
+ * Map component that creates a GeoIQ map to be displayed
+ * onto the page.
+ * @param mapId The GeoCommons map id to be used.
+ * @param domId DOM id which the map will be inserted.
  */
 linbr.view.Map = function (mapId, domId) {
 	var mapObj = this;
 	this.geoIQMap = new F1.Maker.Map({ map_id: mapId,
 										dom_id: domId,
-										onMapLoaded : mapObj.onMapLoaded,
+										onLayerAdded : mapObj.onLayerAdded,
 										onFeatureSelected : mapObj.showFeatureInfo
 									});
 };
 
+
 /**
- * When all layers are loaded for the premade map, create an empty datasets
- * for the Twitter feeds.
- * @param map
+ * Layers added handler. 
+ * @param args
  */
-linbr.view.Map.prototype.onMapLoaded = function(args) {
-	
+linbr.view.Map.prototype.onLayerAdded = function(args) {
+	console.info("layer added:" + args);
 };
 
 /**
