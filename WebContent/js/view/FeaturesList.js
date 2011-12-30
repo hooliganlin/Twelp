@@ -133,6 +133,7 @@ linbr.view.FeaturesList.prototype.createBufferDiv = function(data) {
 	
 	var txtBufferDist = $(document.createElement('input'));
 	txtBufferDist.attr('id', 'txtBufferDist'+data.fid);
+	txtBufferDist.attr('name', 'txtBufferDist'+data.fid);
 	txtBufferDist.attr('type', 'text');
 	
 	var cbBufferUnits = $(document.createElement('select'));
@@ -169,6 +170,8 @@ linbr.view.FeaturesList.prototype.runTwitterAnalysis = function(args) {
 		twitterArgs['long'] = data.feature.extent[2];
 		twitterArgs['radius'] = radius;
 		twitterArgs['units'] = units;
+		//validate the radius value TODO: implement jquery.validate in a form
+		radius = radius == "" ? 0 : radius;
 		
 		var twitterAnalysis = new linbr.twitter.TwitterAnalysis();
 		twitterAnalysis.findTweets(twitterArgs, function(twitterResponse) {
