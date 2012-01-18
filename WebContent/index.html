@@ -1,4 +1,4 @@
-<html>
+<html lang="en-US">
 	<head>
 		<title>Twelp - Combining Yelp with Twitter</title>
 		<script type="text/javascript" src="http://geocommons.com/javascripts/f1.api.js"></script>
@@ -9,41 +9,58 @@
 		<script type="text/javascript" src="js-lib/webtoolkit-base64.js"></script>
 		<script type="text/javascript" src="js-lib/json2.js"></script>
 		<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="js/RequestHeader.js"></script>
 		<script type="text/javascript" src="js/model/Feature.js"></script>
 		<script type="text/javascript" src="js/view/Map.js"></script>
+		<script type="text/javascript" src="js/geoiq/Login.js"></script>
 		<script type="text/javascript" src="js/view/FeaturesList.js"></script>
 		<script type="text/javascript" src="js/view/DetailsGrid.js"></script>
 		<script type="text/javascript" src="js/twitter/TwitterAnalysis.js"></script>
 		<script type="text/javascript" src="js/geoiq/DatasetCreator.js"></script>
 		<script type="text/javascript" src="js/geoiq/FeatureCreator.js"></script>
 		<script type="text/javascript" src="js/geoiq/LayerCreator.js"></script>
- 		<script type="text/javascript" src="js/RequestHeader.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/styles.css" />
-		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<link rel="stylesheet" type="text/css" href="css/styles.css"></link>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet"></link>	
 	</head>
 
-	<body class="bodyClass">
-		<script type="text/javascript">
-			var map = new linbr.view.Map("127297", "maker_map");
-		</script>
-		<div class="header">
-			<h1>TWELP</h1>
-			<p>Start by selecting a feature on the map below</p>
+	<body class="container">
+		 <div id="login">
+			<h2>GeoCommons Login</h2>
+			<table class="formElementsContainer">
+				<tr>
+					<td><label for="username">Username:</label></td>
+					<td><input id="username" name="username" type="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="password">Password:</label></td>
+					<td><input id="password" name="password" type="password" /></td>
+				</tr>
+			</table>
+			<input id="btnLogin" type="button" value="Login" onclick="linbr.geoiq.Login.loginGeoIQ()" />	
 		</div>
-		<div class="geocommons_map" id="maker_map"></div>
-		<div align="right">
-			<br /><a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
-		</div>
-		<div id="bottomDiv">
-			<div class="infoDiv">
-				<br /><b>Features Selected:</b><br />
-				<div id="featuresDiv">
+		<div id="content">
+			<div id="header">
+				<h1>TWELP</h1>
+				<p>Start by selecting a feature on the map below</p>
+			</div>
+			<div id="mapContainer">
+				<div class="geocommons_map" id="maker_map"></div>
+				<div align="right">
+					<br /><a class="geocommons_map_link" id="maker_map_link" href="http://geocommons.com/maps/127297">View map on GeoCommons</a>
 				</div>
 			</div>
-			<div class="infoDiv">
-				<br /><b>Results:</b><br />
-				<div id="analysisDiv"></div>
-			</div>
+			
+			<div id="rightPane">
+				<div class="infoDiv">
+					<br /><b>Features Selected:</b><br />
+					<div id="featuresDiv">
+					</div>
+				</div>
+				<div class="infoDiv">
+					<br /><b>Results:</b><br />
+					<div id="analysisDiv"></div>
+				</div>
+			</div>			
 		</div>
 	</body>
 </html>

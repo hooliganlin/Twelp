@@ -12,7 +12,6 @@ linbr.model.Feature = function(feature) {
 	this.fields = this.serializeFields(feature);
 	
 	/** common fields for all GeoCommons features **/
-	this.extent = this.serializeExtent(feature.extent);
 	this.guid = feature.guid;
 	this.geometry = feature.geometry;
 };

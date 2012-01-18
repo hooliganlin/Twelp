@@ -24,11 +24,10 @@ linbr.geoiq.LayerCreator = (function() {
 		 * onto the GeoIQ map.
 		 */
 		this.addLayer = function(datasetId) {
-			map.geoIQMap.addLayer({ 
-									source : "finder:" + datasetId,
-									zoomToExtent : true,
-									styles : { icon: { symbol : "pushpinIcon", size:1, color : 0xFF0000},  
-											   stroke: { color: 0x00FF00, alpha: .5, weight : 3}}
+			geoIQMap.addLayer({ source : "finder:" + datasetId,
+								zoomToExtent : true,
+								styles : { icon: { symbol : "pushpinIcon", size:1, color : 0xFF0000},  
+										   stroke: { color: 0x00FF00, alpha: .5, weight : 3}}
 			});
 		};
 		

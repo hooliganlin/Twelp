@@ -8,20 +8,35 @@ linbr.view = linbr.view || {};
 linbr.view.Map = linbr.view.Map || {};
 
 /**
+ * Global scope map object. Is set when the map has been loaded.
+ */
+var geoIQMap = null;
+
+/**
  * Map component that creates a GeoIQ map to be displayed
  * onto the page.
  * @param mapId The GeoCommons map id to be used.
  * @param domId DOM id which the map will be inserted.
  */
 linbr.view.Map = function (mapId, domId) {
-	var mapObj = this;
-	this.geoIQMap = new F1.Maker.Map({ map_id: mapId,
-										dom_id: domId,
-										onLayerAdded : mapObj.onLayerAdded,
-										onFeatureSelected : mapObj.showFeatureInfo
-									});
+	this.mapObj = this;
+	this.mapId = mapId;
+	this.domId = domId;
 };
 
+/**
+ * Loads the map onto the specified DOM.
+ */
+linbr.view.Map.prototype.loadMap = function() {
+	this.geoIQMap = new F1.Maker.Map({ map_id: this.mapId,
+		dom_id: this.domId,
+		uiLayers: false,
+		onLayerAdded : this.mapObj.onLayerAdded,
+		onFeatureSelected : this.mapObj.showFeatureInfo
+	});
+	
+	geoIQMap = this.geoIQMap;
+};
 
 /**
  * Layers added handler. 
