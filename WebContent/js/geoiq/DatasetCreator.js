@@ -11,7 +11,7 @@ var GEOIQ_CREATE_FEATURE_URL = "http://geocommons.com/datasets/%s/features.json"
  */
 linbr.geoiq.DatasetCreator = (function() {
 	var instance = null;
-	function Instance(){
+	function Instance(){ 
 		this.datasetId = "";
 		/**
 		 * Creates the dataset for the queried tweets.
@@ -37,33 +37,30 @@ linbr.geoiq.DatasetCreator = (function() {
 			    beforeSend : this.setRequestHeader,
 			    success: function(response) { 
 			    	var jsonResponse = response;
-			    	try{
-			    		//for IE and firefox
+			    	//detect browser for handling the JSON response
+			    	if($.browser.msie || $.browser.mozilla) {
 			    		jsonResponse = JSON.parse(response);
 			    	}
-			    	catch(error) {
-			    		//do nothing if it's in Chrome
-			    	}
-			    	
+
 			    	self.datasetId = jsonResponse.id;
 			    	callback(jsonResponse); 
 			    },
 			    error : this.onError
-			});
+			}); 
 		};
 
 		/**
-		 * 
+		 * Set up the authentication request header. Taken from linbr.geoiq.Login's authentication
+		 * property
 		 * @param request
 		 */
 		this.setRequestHeader = function(request) {
-			var requestHeader = new linbr.util.RequestHeader("hooliganlin", "password123");
-			var auth = requestHeader.makeBaseAuth();
+			var auth = linbr.geoiq.Login.getInstance().authentication;
 			request.setRequestHeader('Authorization', auth);
 		};
 
 		/**
-		 * 
+		 * Error handler for creating datasets
 		 * @param error
 		 */
 		this.onError = function(error) {
